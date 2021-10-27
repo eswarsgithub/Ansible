@@ -46,6 +46,10 @@
       when: ansible_facts['distribution'] == "{{ vm_name }}" 
       notify: 
         - create symbolic link 
+    - name: chmod to file
+      file:
+         path: "/opt/tomcat/latest/bin/*.sh"
+         mode: "+x"     
   handlers:   
     - name: create symbolic link
       file:
@@ -60,7 +64,4 @@
         path: /opt/tomcat/latest
         owner: tomcat
         recurse: yes
-    - name: chmod to file
-      file:
-         path: "/opt/tomcat/latest/bin/*.sh"
-         mode: "+x"        
+           
