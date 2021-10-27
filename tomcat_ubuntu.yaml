@@ -1,0 +1,66 @@
+---
+- name: install tomcat
+  become: yes
+  hosts: all
+  vars_files:
+    - ./vars/vars_tomcat_ubuntu.yaml
+  tasks:
+    - name: install tomcat
+      apt:
+        name: default-jdk
+        update_cache: yes
+        state: present
+      when: ansible_facts['distribution'] == "{{ vm_name }}" 
+    - name: Ensure group "tomcat" exists
+      group:
+        name: "{{ user_name }}"
+        state: present   
+      when: ansible_facts['distribution'] == "{{ vm_name }}"  
+    - name: add user tomcat
+      user:
+        name: "{{ user_name }}"
+        home: "{{ tomcat_installation_path }}"
+        group: "{{ user_name }}"
+        shell: /bin/false
+        state: present
+      when: ansible_facts['distribution'] == "{{ vm_name }}"
+    - name: install unzip 
+      apt:
+        name: unzip
+        state: present
+      when: ansible_facts['distribution'] == "{{ vm_name }}"  
+    - name: install wget
+      apt:
+        name: wget
+        state: present    
+      when: ansible_facts['distribution'] == "{{ vm_name }}" 
+    - name: download zip file
+      get_url:
+        url: "{{ tomcat_download_link }}"
+        dest: "{{ tomcat_download_dest_path }}"
+      when: ansible_facts['distribution'] == "{{ vm_name }}"  
+    - name: unzip zip file
+      unarchive:
+        src: "/tmp/apache-tomcat-9.0.54.zip"
+        dest: "{{ tomcat_installation_path }}"
+      when: ansible_facts['distribution'] == "{{ vm_name }}" 
+      notify: 
+        - create symbolic link 
+  handlers:   
+    - name: create symbolic link
+      file:
+        src: /opt/tomcat/apache-tomcat-9.0.54
+        dest: /opt/tomcat/latest  
+        owner: "{{ user_name }}"
+        group: "{{ user_name }}"
+        state: link
+      when: ansible_facts['distribution'] == "{{ vm_name }}"  
+    - name: change owmer of file
+      file:
+        path: /opt/tomcat/latest
+        owner: tomcat
+        recurse: yes
+    - name: chmod to file
+      file:
+         path: "/opt/tomcat/latest/bin/*.sh"
+         mode: "+x"        

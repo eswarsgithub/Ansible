@@ -1,0 +1,44 @@
+---
+- name: install tomcat
+  become: yes
+  hosts: all
+  tasks:
+    - name: install tomcat
+      package:
+        name: java-1.8.0-openjdk-devel
+        update_cache: yes
+        state: present
+      when: ansible_facts['distribution'] == "CentOS" 
+    - name: Ensure group "tomcat" exists
+      group:
+        name: tomcat
+        state: present   
+      when: ansible_facts['distribution'] == "CentOS"  
+    - name: add user tomcat
+      user:
+        name: tomcat
+        home: /opt/tomcat
+        group: tomcat
+        shell: /bin/false
+        state: present
+      when: ansible_facts['distribution'] == "CentOS"
+    - name: install unzip 
+      package:
+        name: unzip
+        state: present
+      when: ansible_facts['distribution'] == "CentOS"  
+    - name: install wget
+      package:
+        name: wget
+        state: present    
+      when: ansible_facts['distribution'] == "CentOS" 
+    - name: download zip file
+      get_url:
+        url: https://www-eu.apache.org/dist/tomcat/tomcat-9/v9.0.27/bin/apache-tomcat-9.0.27.tar.gz 
+        dest: /tmp
+      when: ansible_facts['distribution'] == "CentOS"  
+    - name: unzip zip file
+      unarchive:
+        src: "/tmp/apache-tomcat-9.0.27.tar.gz"
+        dest: "/opt/tomcat/"
+      when: ansible_facts['distribution'] == "CentOS"  

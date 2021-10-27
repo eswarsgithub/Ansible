@@ -1,0 +1,10 @@
+[ubuntu]
+172.31.26.230
+172.31.30.227
+
+[centos]
+172.31.19.107
+
+[webserver]
+172.31.30.227 package_name='apache2' php_pacakges='["php", "libapache2-mod-php", "php-mysql", "php-cli"]'
+172.31.19.107 package_name='httpd'   php_packages='["php", "php-mysql", "php-fpm"]'
