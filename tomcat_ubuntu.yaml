@@ -68,7 +68,13 @@
       copy:
         src: tomcat_service
         dest: /etc/systemd/system/tomcat.service 
-      when: ansible_facts['distribution'] == "{{ vm_name }}"          
+      when: ansible_facts['distribution'] == "{{ vm_name }}"  
+    - name: demon reload tomcat
+      systemd:
+        state: started
+        daemon_reload: yes
+        name: tomcat   
+        when: ansible_facts['distribution'] == "{{ vm_name }}"       
   handlers:   
     - name: create symbolic link
       file:
