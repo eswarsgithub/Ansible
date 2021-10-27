@@ -36,13 +36,13 @@
       when: ansible_facts['distribution'] == "{{ vm_name }}" 
     - name: download zip file
       get_url:
-        url: "{{ tomcat_download_link }}"
-        dest: "{{ tomcat_download_dest_path }}"
+        url: "{{ tomcat_download_source }}"
+        dest: "{{ tomcat_download_location }}"
       when: ansible_facts['distribution'] == "{{ vm_name }}"  
     - name: unzip zip file
       unarchive:
         src: "/tmp/apache-tomcat-9.0.54.zip"
-        dest: "{{ tomcat_installation_path }}"
+        dest: "{{ tomcat_install_path }}"
       when: ansible_facts['distribution'] == "{{ vm_name }}" 
       notify: 
         - create symbolic link 

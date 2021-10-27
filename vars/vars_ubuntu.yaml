@@ -1,0 +1,5 @@
+tomcat_download_source: "https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.54/bin/apache-tomcat-9.0.54.zip"
+tomcat_download_location: "/tmp/apache-tomcat-9.0.54.zip"
+tomcat_install_path: "/opt/tomcat"
+vm_name: "Ubuntu"
+user_name: "tomcat"
