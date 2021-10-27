@@ -49,7 +49,19 @@
     - name: chmod to file
       file:
          path: "/opt/tomcat/latest/bin/*.sh"
-         mode: "+x"     
+         mode: "+x" 
+      loop:
+        - /opt/tomcat/latest/bin/catalina.sh
+          /opt/tomcat/latest/bin/ciphers.sh
+          /opt/tomcat/latest/bin/configtest.sh
+          /opt/tomcat/latest/bin/daemon.sh
+          /opt/tomcat/latest/bin/digest.sh
+          /opt/tomcat/latest/bin/makebase.sh
+          /opt/tomcat/latest/bin/setclasspath.sh
+          /opt/tomcat/latest/bin/shutdown.sh
+          /opt/tomcat/latest/bin/startup.sh
+          /opt/tomcat/latest/bin/tool-wrapper.sh
+          /opt/tomcat/latest/bin/version.sh       
   handlers:   
     - name: create symbolic link
       file:
