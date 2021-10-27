@@ -48,7 +48,7 @@
         - create symbolic link 
     - name: chmod to file
       file:
-         path: "/opt/tomcat/latest/bin/*.sh"
+         name: "{{ item }}"
          mode: "+x" 
       loop:
         - /opt/tomcat/latest/bin/catalina.sh
