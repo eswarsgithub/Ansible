@@ -19,7 +19,7 @@
     - name: add user tomcat
       user:
         name: "{{ user_name }}"
-        home: "{{ tomcat_installation_path }}"
+        home: "{{ tomcat_install_path }}"
         group: "{{ user_name }}"
         shell: /bin/false
         state: present
