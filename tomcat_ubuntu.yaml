@@ -46,6 +46,7 @@
       when: ansible_facts['distribution'] == "{{ vm_name }}" 
       notify: 
         - create symbolic link 
+        - change owmer of file
     - name: chmod to file
       file:
          path: "{{ item }}"
@@ -61,7 +62,13 @@
         - /opt/tomcat/latest/bin/shutdown.sh
         - /opt/tomcat/latest/bin/startup.sh
         - /opt/tomcat/latest/bin/tool-wrapper.sh
-        - /opt/tomcat/latest/bin/version.sh       
+        - /opt/tomcat/latest/bin/version.sh  
+      when: ansible_facts['distribution'] == "{{ vm_name }}"   
+    - name: Copy file with owner and permissions
+      copy:
+        src: tomcat_service
+        dest: /etc/systemd/system/tomcat.service 
+      when: ansible_facts['distribution'] == "{{ vm_name }}"          
   handlers:   
     - name: create symbolic link
       file:
@@ -76,4 +83,5 @@
         path: /opt/tomcat/latest
         owner: tomcat
         recurse: yes
+      when: ansible_facts['distribution'] == "{{ vm_name }}"   
            
